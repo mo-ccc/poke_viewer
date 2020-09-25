@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 class Pokemonster:
     def __init__(self, name: str):
         self.name = name
@@ -18,14 +19,14 @@ class Pokemonster:
             raise Exception("We were unable to find that pokemon")
 
     def get_abilities(self):
-        self.abilities =  [ab["ability"]["name"]
-                            for ab in
-                            self.data["abilities"]]
+        self.abilities = [ab["ability"]["name"]
+                          for ab in
+                          self.data["abilities"]]
 
     def get_sprite_of_type(self, version: str):
         sprites = self.data["sprites"]
         return sprites[version]
- 
+
     def get_default_and_shiny_sprite(self):
         self.sprites = (self.get_sprite_of_type("front_default"),
                         self.get_sprite_of_type("front_shiny"))
@@ -37,6 +38,7 @@ class Pokemonster:
     @property
     def to_string(self):
         return (self.name, self.abilities, self.types, self.sprites)
+
 
 bulbasaur = Pokemonster("bulbasaur")
 print(bulbasaur.to_string)
