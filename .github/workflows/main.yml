@@ -6,12 +6,12 @@ on:
 jobs:
   test-suite:
     runs-on: ubuntu-latest
-  steps:
-    - name: checkout-branches
-      uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+    steps:
+      - name: checkout-branches
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
     
     
