@@ -2,7 +2,7 @@ import requests
 import json
 
 class Pokemonster:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.link = f"http://pokeapi.co/api/v2/pokemon/{self.name}"
         self.get_data()
@@ -22,7 +22,7 @@ class Pokemonster:
         self.abilities =  [ab["ability"]["name"] for ab in self.data["abilities"]]
     
         
-    def get_sprite_of_type(self, version):
+    def get_sprite_of_type(self, version: str):
         sprites = self.data["sprites"]
         return sprites[version]
         
