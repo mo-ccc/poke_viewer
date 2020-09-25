@@ -22,3 +22,10 @@ Modules used:
 User Interaction:
 -The user will use the mouse to make a selection from a tkinter option-menu
 -The user will be able to toggle a tkinter button with mouse click
+
+ssh'd into ec2
+created a new user github-actions
+removed password for user
+su to github-actions
+generated keys
+installed python3.8
