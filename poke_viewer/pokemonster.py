@@ -39,6 +39,51 @@ class Pokemonster:
     def to_string(self):
         return (self.name, self.abilities, self.types, self.sprites)
 
+    pokemon_152 = ['bulbasaur', 'ivysaur', 'venusaur', 'charmander',
+                   'charmeleon', 'charizard', 'squirtle', 'wartortle',
+                   'blastoise', 'caterpie', 'metapod', 'butterfree',
+                   'weedle', 'kakuna', 'beedrill', 'pidgey',
+                   'pidgeotto', 'pidgeot', 'rattata', 'raticate',
+                   'spearow', 'fearow', 'ekans', 'arbok', 'pikachu',
+                   'raichu', 'sandshrew', 'sandslash', 'nidoran-f',
+                   'nidorina', 'nidoqueen', 'nidoran-m', 'nidorino',
+                   'nidoking', 'clefairy', 'clefable', 'vulpix',
+                   'ninetales', 'jigglypuff', 'wigglytuff', 'zubat',
+                   'golbat', 'oddish', 'gloom', 'vileplume', 'paras',
+                   'parasect', 'venonat', 'venomoth', 'diglett',
+                   'dugtrio', 'meowth', 'persian', 'psyduck', 'golduck',
+                   'mankey', 'primeape', 'growlithe', 'arcanine',
+                   'poliwag', 'poliwhirl', 'poliwrath', 'abra',
+                   'kadabra', 'alakazam', 'machop', 'machoke',
+                   'machamp', 'bellsprout', 'weepinbell', 'victreebel',
+                   'tentacool', 'tentacruel', 'geodude', 'graveler',
+                   'golem', 'ponyta', 'rapidash', 'slowpoke', 'slowbro',
+                   'magnemite', 'magneton', 'farfetchd', 'doduo',
+                   'dodrio', 'seel', 'dewgong', 'grimer', 'muk',
+                   'shellder', 'cloyster', 'gastly', 'haunter',
+                   'gengar', 'onix', 'drowzee', 'hypno', 'krabby',
+                   'kingler', 'voltorb', 'electrode', 'exeggcute',
+                   'exeggutor', 'cubone', 'marowak', 'hitmonlee',
+                   'hitmonchan', 'lickitung', 'koffing', 'weezing',
+                   'rhyhorn', 'rhydon', 'chansey', 'tangela',
+                   'kangaskhan', 'horsea', 'seadra', 'goldeen',
+                   'seaking', 'staryu', 'starmie', 'mr-mime',
+                   'scyther', 'jynx', 'electabuzz', 'magmar', 'pinsir',
+                   'tauros', 'magikarp', 'gyarados', 'lapras', 'ditto',
+                   'eevee', 'vaporeon', 'jolteon', 'flareon', 'porygon',
+                   'omanyte', 'omastar', 'kabuto', 'kabutops',
+                   'aerodactyl', 'snorlax', 'articuno', 'zapdos',
+                   'moltres', 'dratini', 'dragonair', 'dragonite',
+                   'mewtwo', 'mew']
 
-bulbasaur = Pokemonster("bulbasaur")
-print(bulbasaur.to_string)
+    @classmethod
+    def list_152(cls):
+        return cls.pokemon_152
+
+    @classmethod
+    def add_pokemon(cls, name):
+        x = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
+        if x.status_code == 200:
+            cls.pokemon_152.append(name)
+        else:
+            print("Pokemon not found")
