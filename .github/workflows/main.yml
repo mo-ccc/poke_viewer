@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fresh clone and install
-        uses: appleboy/shh-action@master
+        uses: appleboy/ssh-action@master
         with:
           host: 18.233.220.35
           username: github-actions
