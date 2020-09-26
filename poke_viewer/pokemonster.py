@@ -28,8 +28,8 @@ class Pokemonster:
         return sprites[version]
 
     def get_default_and_shiny_sprite(self):
-        self.sprites = (self.get_sprite_of_type("front_default"),
-                        self.get_sprite_of_type("front_shiny"))
+        self.sprites = [self.get_sprite_of_type("front_default"),
+                        self.get_sprite_of_type("front_shiny")]
 
     def get_types(self):
         types = self.data["types"]
