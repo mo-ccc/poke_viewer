@@ -6,6 +6,7 @@ class Application():
         self.master = None
         self.root = tkinter.Tk()
         self.root.geometry('350x250')
+        self.create_pokedex_view(0, 0)
         
     def init_tkinter_vars(self):
         self.selected_pokemon_var = tkinter.StringVar()
