@@ -7,9 +7,9 @@ class Pokemonster:
         self.name = name
         self.link = f"http://pokeapi.co/api/v2/pokemon/{self.name}"
         self.get_data()
-        self.get_abilities()
-        self.get_types()
-        self.get_default_and_shiny_sprite()
+        self.abilities = self.get_abilities()
+        self.types = self.get_types()
+        self.sprites = self.get_default_and_shiny_sprite()
 
     def get_data(self):
         try:
@@ -18,28 +18,28 @@ class Pokemonster:
         except (AttributeError, json.decoder.JSONDecodeError):
             raise Exception("We were unable to find that pokemon")
 
-    def get_abilities(self):
-        self.abilities = [ab["ability"]["name"]
-                          for ab in
-                          self.data["abilities"]]
+    def get_abilities(self) -> list:
+        return [ab["ability"]["name"]
+                for ab in
+                self.data["abilities"]]
 
-    def get_sprite_of_type(self, version: str):
+    def get_sprite_of_type(self, version: str) -> str:
         sprites = self.data["sprites"]
         return sprites[version]
 
-    def get_default_and_shiny_sprite(self):
-        self.sprites = [self.get_sprite_of_type("front_default"),
-                        self.get_sprite_of_type("front_shiny")]
+    def get_default_and_shiny_sprite(self) -> list:
+        return [self.get_sprite_of_type("front_default"),
+                self.get_sprite_of_type("front_shiny")]
 
-    def get_types(self):
+    def get_types(self) -> list:
         types = self.data["types"]
-        self.types = [type["type"]["name"] for type in types]
+        return [type["type"]["name"] for type in types]
 
     @property
-    def to_string(self):
+    def to_string(self) -> tuple:
         return (self.name, self.abilities, self.types, self.sprites)
 
-    pokemon_152 = ['bulbasaur', 'ivysaur', 'venusaur', 'charmander',
+    pokedex = ['bulbasaur', 'ivysaur', 'venusaur', 'charmander',
                    'charmeleon', 'charizard', 'squirtle', 'wartortle',
                    'blastoise', 'caterpie', 'metapod', 'butterfree',
                    'weedle', 'kakuna', 'beedrill', 'pidgey',
@@ -77,13 +77,22 @@ class Pokemonster:
                    'mewtwo', 'mew']
 
     @classmethod
-    def list_152(cls):
-        return cls.pokemon_152
+    def list_pokedex(cls):
+        return cls.pokedex
 
     @classmethod
     def add_pokemon(cls, name):
         x = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
         if x.status_code == 200:
-            cls.pokemon_152.append(name)
+            cls.pokedex.append(name)
         else:
             print("Pokemon not found")
+    
+    @classmethod
+    def remove_pokemon(cls, name):
+        for pokemon in cls.pokedex:
+            if name == pokemon.name:
+                cls.pokedex.remove(name)
+                return
+        print("Could not find that pokemon in the pokedex")
+        
