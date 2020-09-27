@@ -3,7 +3,6 @@ from pokemonster import Pokemonster
 
 class Application():
     def __init__(self):
-        self.master = None
         self.root = tkinter.Tk()
         self.root.geometry('350x250')
         self.create_pokedex_view(0, 0)
@@ -15,19 +14,19 @@ class Application():
         frame = tkinter.Frame(self.root)
         frame.grid(row=xcoord, column=ycoord)
 
-        listbox = tkinter.Listbox(frame)
-        listbox.pack(side="left")
+        self.listbox = tkinter.Listbox(frame)
+        self.listbox.pack(side="left")
 
         for pokemon in Pokemonster.list_pokedex():
-            listbox.insert(tkinter.END, pokemon)
-
-        listbox.bind("<<ListboxSelect>>", self.make_selection(listbox))
-        listbox.select_set(0)
-        self.make_selection(listbox)
+            self.listbox.insert(tkinter.END, pokemon)
+        
+        self.listbox.select_set(0)
+        self.listbox.bind("<<ListboxSelect>>", self.make_selection)
+        self.make_selection()
   
-    def make_selection(self, listbox):
+    def make_selection(self, event=None):
         #gets the index of the current selection from the listbox
-        index = listbox.curselection()[0]
+        index = self.listbox.curselection()[0]
         #uses index to retrieve name of pokemon
         name = Pokemonster.list_pokedex()[index]
         #initalizes pokemonster object from the name
