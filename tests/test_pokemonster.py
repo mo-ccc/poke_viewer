@@ -1,5 +1,6 @@
 from poke_viewer.pokemonster import Pokemonster
 import unittest
+import copy
 
 class TestApi(unittest.TestCase):
     bulbasaur = Pokemonster("bulbasaur")
@@ -15,4 +16,10 @@ class TestApi(unittest.TestCase):
          "master/sprites/pokemon/1.png",
          "https://raw.githubusercontent.com/PokeAPI/sprites/"
          "master/sprites/pokemon/shiny/1.png"])
-        
+
+    def test_pokedex_append(self):
+        dex = Pokemonster.list_pokedex()
+        copy_dex = copy.deepcopy(dex)
+        Pokemonster.add_pokemon("sandile")
+        copy_dex.append("sandile")
+        self.assertEqual(copy_dex, dex)

@@ -6,7 +6,7 @@ class Pokemonster:
     def __init__(self, name: str):
         self.name = name
         self.link = f"http://pokeapi.co/api/v2/pokemon/{self.name}"
-        self.get_data()
+        self.data = self.get_data()
         self.abilities = self.get_abilities()
         self.types = self.get_types()
         self.sprites = self.get_default_and_shiny_sprite()
@@ -14,7 +14,7 @@ class Pokemonster:
     def get_data(self):
         try:
             data = requests.get(self.link).text
-            self.data = json.loads(data)
+            return json.loads(data)
         except (AttributeError, json.decoder.JSONDecodeError):
             raise Exception("We were unable to find that pokemon")
 
