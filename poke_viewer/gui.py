@@ -8,15 +8,16 @@ class Application():
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.geometry('350x250')
-        self.create_pokedex_widget(0, 0)
         self.create_sprite_widget(1, 0)
+        self.create_pokedex_widget(0, 0)
+        
         
     def init_tkinter_vars(self):
         self.selected_pokemon_var = tkinter.StringVar()
     
     def create_pokedex_widget(self, xcoord, ycoord):
         frame = tkinter.Frame(self.root)
-        frame.grid(row=xcoord, column=ycoord)
+        frame.grid(column=xcoord, row=ycoord)
 
         self.listbox = tkinter.Listbox(frame)
         self.listbox.pack(side="left")
@@ -43,10 +44,10 @@ class Application():
         raw_bytes = pil_image.open(BytesIO(data))
         img = pil_image_tk.PhotoImage(raw_bytes)
         self.imgLbl.configure(image=img)
-        images = []
-        images.append(img)
+        self.images = []
+        self.images.append(img)
     
     def create_sprite_widget(self, xcoord, ycoord):
         self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
                                width=150, height=150)
-        self.imgLbl.grid(row=xcoord, column=ycoord)
+        self.imgLbl.grid(column=xcoord, row=ycoord)
