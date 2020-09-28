@@ -105,5 +105,3 @@ class Pokemonster:
                 cls.pokedex.remove(name)
                 return
         print("Could not find that pokemon in the pokedex")
-
-Pokemonster.add_pokemon("jynx")
