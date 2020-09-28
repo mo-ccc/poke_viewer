@@ -8,26 +8,24 @@ import requests
 class Application():
     def __init__(self):
         self.root = tkinter.Tk()
-        self.root.geometry('350x250')
+        self.root.geometry('400x250')
         self.create_sprite_widget(1, 0)
+        self.create_types_widget(2, 0)
         self.create_pokedex_widget(0, 0)
 
-    def init_tkinter_vars(self):
-        self.selected_pokemon_var = tkinter.StringVar()
-
     def create_pokedex_widget(self, xcoord, ycoord):
-        # create a frame and place on grd
+        # create a frame and place on root grid
         frame = tkinter.Frame(self.root)
         frame.grid(column=xcoord, row=ycoord)
 
         # create a vertical scrollbar and place in right side of frame
         scrollbar = tkinter.Scrollbar(frame, orient="vertical")
-        scrollbar.pack(side="right")
+        scrollbar.pack(side="right", fill="y")
 
         # create a list box and place in left side of frame
         # scrollbar controls the yscroll of the listbox
         self.listbox = tkinter.Listbox(frame, yscrollcommand=scrollbar.set)
-        self.listbox.pack(side="left", fill="y")
+        self.listbox.pack(side="left")
         # config scroll bar to manage listbox
         scrollbar.config(command=self.listbox.yview)
 
@@ -48,19 +46,55 @@ class Application():
         # uses index to retrieve name of pokemon
         name = Pokemonster.list_pokedex()[index]
         # initalizes pokemonster object from the name
-        self.pokemon = Pokemonster(name)
-        print(self.pokemon.to_string)
-        self.display_sprite_img("default")
+        pokemon = Pokemonster(name)
+        print(pokemon.to_string)
+        self.display_sprite_img(pokemon.sprites, "default")
+        self.display_types(pokemon.types)
 
-    def display_sprite_img(self, sprite):
-        data = requests.get(self.pokemon.sprites[sprite]).content
+    def display_sprite_img(self, sprites, sprite):
+        data = requests.get(sprites[sprite]).content
         raw_bytes = pil_image.open(BytesIO(data))
         img = pil_image_tk.PhotoImage(raw_bytes)
         self.imgLbl.configure(image=img)
         self.images = []
         self.images.append(img)
 
+    @classmethod
+    def convert_link_2_img(cls, link):
+        data = requests.get(link).content
+        raw_bytes = pil_image.open(BytesIO(data))
+        return pil_image_tk.PhotoImage(raw_bytes)
+
     def create_sprite_widget(self, xcoord, ycoord):
         self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
                                     width=150, height=150)
         self.imgLbl.grid(column=xcoord, row=ycoord)
+        
+    def create_types_widget(self, xcoord, ycoord):
+        self.types_frame = tkinter.Frame(self.root)
+        self.types_frame.grid(column=xcoord, row=ycoord)
+
+    colort = {
+        "fire": "red", "water": "blue", "ground": "brown",
+        "poison": "purple", "grass": "green", "bug": "lawn green",
+        "dragon": "slate blue", "fighting": "IndianRed1",
+        "flying": "sky blue", "ghost": "plum1", "psychic": "pink",
+        "ice": "PaleTurqoise1", "electric": "yellow",
+        "rock": "burlywood3"
+    }
+
+    @classmethod
+    def type_colours(cls, color):
+        if color in cls.colort:
+            return cls.colort[color]
+        return "grey"
+    
+    def display_types(self, types):
+        list_grid = self.types_frame.pack_slaves()
+        print(list_grid)
+        for l in list_grid:
+            l.destroy()
+        for t in types:
+            lbl = tkinter.Label(self.types_frame, text=t,
+                                bg=self.type_colours(t), padx=10)
+            lbl.pack(side="left")
