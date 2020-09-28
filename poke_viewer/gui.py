@@ -1,7 +1,7 @@
 import tkinter
 from pokemonster import Pokemonster
 from io import BytesIO
-from PIL import Image as pil_image, ImageTk as pil_image_tk  # type: ignore
+from PIL import Image as pil_image, ImageTk as pil_image_tk
 import requests
 
 
@@ -12,6 +12,7 @@ class Application():
         self.create_sprite_widget(1, 0)
         self.create_types_widget(2, 0)
         self.create_pokedex_widget(0, 0)
+        self.create_add_delete_buttons(0, 1)
 
     def create_pokedex_widget(self, xcoord, ycoord):
         # create a frame and place on root grid
@@ -51,6 +52,12 @@ class Application():
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
 
+
+    def create_sprite_widget(self, xcoord, ycoord):
+        self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
+                                    width=150, height=150)
+        self.imgLbl.grid(column=xcoord, row=ycoord)
+
     def display_sprite_img(self, sprites, sprite):
         data = requests.get(sprites[sprite]).content
         raw_bytes = pil_image.open(BytesIO(data))
@@ -64,11 +71,6 @@ class Application():
         data = requests.get(link).content
         raw_bytes = pil_image.open(BytesIO(data))
         return pil_image_tk.PhotoImage(raw_bytes)
-
-    def create_sprite_widget(self, xcoord, ycoord):
-        self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
-                                    width=150, height=150)
-        self.imgLbl.grid(column=xcoord, row=ycoord)
 
     def create_types_widget(self, xcoord, ycoord):
         self.types_frame = tkinter.Frame(self.root)
@@ -97,3 +99,22 @@ class Application():
             lbl = tkinter.Label(self.types_frame, text=t,
                                 bg=self.type_colours(t), padx=10)
             lbl.pack(side="left")
+
+    def create_add_delete_buttons(self, xcoord, ycoord):
+        frame = tkinter.Frame(self.root)
+        frame.grid(column=xcoord, row=ycoord)
+        add_button = tkinter.Button(frame, text="add",
+                                    command=self.add_pokemon)
+        add_button.pack(side="left", padx=(0,10), ipadx=7)
+        delete_button = tkinter.Button(frame, text="delete")
+        delete_button.pack(side="left", padx=(0,15))
+        
+    def add_pokemon(self):
+        popup = tkinter.Tk()
+        textfield = tkinter.Entry(popup)
+        textfield.pack(side="left")
+        enter = tkinter.Button(popup, text="enter")
+        enter.pack(side="left")
+    
+    def del_pokemon(self):
+        self.listbox.delete(tkinter.ACTIVE)
