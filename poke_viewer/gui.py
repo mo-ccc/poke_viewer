@@ -52,7 +52,6 @@ class Application():
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
 
-
     def create_sprite_widget(self, xcoord, ycoord):
         self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
                                     width=150, height=150)
@@ -105,16 +104,16 @@ class Application():
         frame.grid(column=xcoord, row=ycoord)
         add_button = tkinter.Button(frame, text="add",
                                     command=self.add_pokemon)
-        add_button.pack(side="left", padx=(0,10), ipadx=7)
+        add_button.pack(side="left", padx=(0, 10), ipadx=7)
         delete_button = tkinter.Button(frame, text="delete")
-        delete_button.pack(side="left", padx=(0,15))
-        
+        delete_button.pack(side="left", padx=(0, 15))
+
     def add_pokemon(self):
         popup = tkinter.Tk()
         textfield = tkinter.Entry(popup)
         textfield.pack(side="left")
         enter = tkinter.Button(popup, text="enter")
         enter.pack(side="left")
-    
+
     def del_pokemon(self):
         self.listbox.delete(tkinter.ACTIVE)
