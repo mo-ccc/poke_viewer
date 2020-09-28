@@ -1,5 +1,8 @@
 import tkinter
 from pokemonster import Pokemonster
+from io import StringIO, BytesIO
+from PIL import Image as pil_image, ImageTk as pil_image_tk
+import requests
 
 class Application():
     def __init__(self):
@@ -33,11 +36,17 @@ class Application():
         #initalizes pokemonster object from the name
         self.pokemon = Pokemonster(name)
         print(self.pokemon.to_string)
+        self.display_sprite_img("default")
         
-    def convert_to_img(self, sprite):
-        pass
+    def display_sprite_img(self, sprite):
+        data = requests.get(self.pokemon.sprites[sprite]).content
+        raw_bytes = pil_image.open(BytesIO(data))
+        img = pil_image_tk.PhotoImage(raw_bytes)
+        self.imgLbl.configure(image=img)
+        images = []
+        images.append(img)
     
     def create_sprite_widget(self, xcoord, ycoord):
-        imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
+        self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
                                width=150, height=150)
-        imgLbl.grid(row=xcoord, column=ycoord)
+        self.imgLbl.grid(row=xcoord, column=ycoord)
