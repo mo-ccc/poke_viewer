@@ -1,7 +1,7 @@
 import tkinter
 from pokemonster import Pokemonster
 from io import BytesIO
-from PIL import Image as pil_image, ImageTk as pil_image_tk
+from PIL import Image as pil_image, ImageTk as pil_image_tk  # type: ignore
 import requests
 
 
@@ -69,7 +69,7 @@ class Application():
         self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
                                     width=150, height=150)
         self.imgLbl.grid(column=xcoord, row=ycoord)
-        
+
     def create_types_widget(self, xcoord, ycoord):
         self.types_frame = tkinter.Frame(self.root)
         self.types_frame.grid(column=xcoord, row=ycoord)
@@ -88,12 +88,11 @@ class Application():
         if color in cls.colort:
             return cls.colort[color]
         return "grey"
-    
+
     def display_types(self, types):
         list_grid = self.types_frame.pack_slaves()
-        print(list_grid)
-        for l in list_grid:
-            l.destroy()
+        for label in list_grid:
+            label.destroy()
         for t in types:
             lbl = tkinter.Label(self.types_frame, text=t,
                                 bg=self.type_colours(t), padx=10)
