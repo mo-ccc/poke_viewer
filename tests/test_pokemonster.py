@@ -12,10 +12,10 @@ class TestApi(unittest.TestCase):
     
     def test_api_sprite(self):
         self.assertEqual(self.bulbasaur.sprites, 
-        ["https://raw.githubusercontent.com/PokeAPI/sprites/"
+        {"default": "https://raw.githubusercontent.com/PokeAPI/sprites/"
          "master/sprites/pokemon/1.png",
-         "https://raw.githubusercontent.com/PokeAPI/sprites/"
-         "master/sprites/pokemon/shiny/1.png"])
+         "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/"
+         "master/sprites/pokemon/shiny/1.png"})
 
     def test_pokedex_append(self):
         dex = Pokemonster.list_pokedex()

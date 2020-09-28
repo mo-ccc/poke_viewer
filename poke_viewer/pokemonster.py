@@ -4,12 +4,12 @@ import json
 
 class Pokemonster:
     def __init__(self, name: str):
-        self.name = name
+        self.name: str = name
         link = f"http://pokeapi.co/api/v2/pokemon/{self.name}"
-        self.data = self.get_data(link)
-        self.abilities = self.get_abilities()
-        self.types = self.get_types()
-        self.sprites = self.get_default_and_shiny_sprite()
+        self.data: dict = self.get_data(link)
+        self.abilities: list = self.get_abilities()
+        self.types: list = self.get_types()
+        self.sprites: dict = self.get_default_and_shiny_sprite()
 
     def get_data(self, link: str):
         try:
@@ -24,15 +24,22 @@ class Pokemonster:
                 self.data["abilities"]]
 
     def get_sprite_of_type(self, version: str) -> str:
-        sprites = self.data["sprites"]
+        # gets the dictionary of sprites from the api data
+        sprites: dict = self.data["sprites"]
+        # returns the link of a sprite of requested version
         return sprites[version]
 
-    def get_default_and_shiny_sprite(self) -> list:
-        return [self.get_sprite_of_type("front_default"),
-                self.get_sprite_of_type("front_shiny")]
+    '''
+    uses the get_sprite_of_type function twice to get
+    the default and shiny sprite links and return them
+    in a dict object.
+    '''
+    def get_default_and_shiny_sprite(self) -> dict:
+        return {"default": self.get_sprite_of_type("front_default"),
+                "shiny": self.get_sprite_of_type("front_shiny")}
 
     def get_types(self) -> list:
-        types = self.data["types"]
+        types: dict = self.data["types"]
         return [type["type"]["name"] for type in types]
 
     @property
@@ -82,9 +89,12 @@ class Pokemonster:
 
     @classmethod
     def add_pokemon(cls, name):
-        x = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
-        if x.status_code == 200:
-            cls.pokedex.append(name)
+        response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
+        if response.status_code == 200:
+            if name in cls.pokedex:
+                print("Pokemon already in pokedex")
+            else:
+                cls.pokedex.append(name)
         else:
             print("Pokemon not found")
 
@@ -95,3 +105,5 @@ class Pokemonster:
                 cls.pokedex.remove(name)
                 return
         print("Could not find that pokemon in the pokedex")
+
+Pokemonster.add_pokemon("jynx")

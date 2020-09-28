@@ -5,12 +5,13 @@ class Application():
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.geometry('350x250')
-        self.create_pokedex_view(0, 0)
+        self.create_pokedex_widget(0, 0)
+        self.create_sprite_widget(1, 0)
         
     def init_tkinter_vars(self):
         self.selected_pokemon_var = tkinter.StringVar()
     
-    def create_pokedex_view(self, xcoord, ycoord):
+    def create_pokedex_widget(self, xcoord, ycoord):
         frame = tkinter.Frame(self.root)
         frame.grid(row=xcoord, column=ycoord)
 
@@ -30,6 +31,13 @@ class Application():
         #uses index to retrieve name of pokemon
         name = Pokemonster.list_pokedex()[index]
         #initalizes pokemonster object from the name
-        pokemon = Pokemonster(name)
-        print(pokemon.to_string)
+        self.pokemon = Pokemonster(name)
+        print(self.pokemon.to_string)
         
+    def convert_to_img(self, sprite):
+        pass
+    
+    def create_sprite_widget(self, xcoord, ycoord):
+        imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
+                               width=150, height=150)
+        imgLbl.grid(row=xcoord, column=ycoord)
