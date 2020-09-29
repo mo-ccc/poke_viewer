@@ -93,10 +93,13 @@ class Pokemonster:
         if response.status_code == 200:
             if name in cls.pokedex:
                 print("Pokemon already in pokedex")
+                return 1
             else:
                 cls.pokedex.append(name)
+                return 0
         else:
             print("Pokemon not found")
+            return 2
 
     @classmethod
     def remove_pokemon(cls, name: str):

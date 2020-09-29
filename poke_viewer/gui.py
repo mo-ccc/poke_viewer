@@ -112,8 +112,13 @@ class Application():
         popup = tkinter.Tk()
         textfield = tkinter.Entry(popup)
         textfield.pack(side="left")
-        enter = tkinter.Button(popup, text="enter")
+        enter = tkinter.Button(popup, text="enter",
+                               command=self.write_pokemon(textfield.get()))
         enter.pack(side="left")
+
+    def write_pokemon(self, name):
+        if Pokemonster.add_pokemon(name) == 0:
+            self.listbox.insert("end", name)
 
     def del_pokemon(self):
         self.listbox.delete(tkinter.ACTIVE)
