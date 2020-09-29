@@ -105,20 +105,25 @@ class Application():
         add_button = tkinter.Button(frame, text="add",
                                     command=self.add_pokemon)
         add_button.pack(side="left", padx=(0, 10), ipadx=7)
-        delete_button = tkinter.Button(frame, text="delete")
+        delete_button = tkinter.Button(frame, text="delete",
+                                       command=self.del_pokemon)
         delete_button.pack(side="left", padx=(0, 15))
 
     def add_pokemon(self):
-        popup = tkinter.Tk()
-        textfield = tkinter.Entry(popup)
+        self.popup = tkinter.Tk()
+        textfield = tkinter.Entry(self.popup)
         textfield.pack(side="left")
-        enter = tkinter.Button(popup, text="enter",
-                               command=self.write_pokemon(textfield.get()))
+        enter = tkinter.Button(self.popup, text="enter",
+                               command=lambda:
+                                   self.write_pokemon(textfield.get()))
         enter.pack(side="left")
 
     def write_pokemon(self, name):
+        print(name)
         if Pokemonster.add_pokemon(name) == 0:
             self.listbox.insert("end", name)
+            self.popup.destroy()
 
     def del_pokemon(self):
+        Pokemonster.pokedex.pop(self.listbox.curselection()[0])
         self.listbox.delete(tkinter.ACTIVE)
