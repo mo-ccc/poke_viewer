@@ -3,7 +3,6 @@ from pokemonster import Pokemonster
 from io import BytesIO
 from PIL import Image as pil_image, ImageTk as pil_image_tk
 import requests
-import json
 
 
 class Application():
@@ -155,7 +154,8 @@ class Application():
         for ability in abilities:
             ab_but = tkinter.Button(self.abilities_frame, text=ability,
                                     command=lambda:
-                                        self.display_ability_info(ability))
+                                        self.display_ability_info(ability.info)
+                                    )
             ab_but.grid(column=positions[count][0],
                         row=positions[count][1])
             count += 1
@@ -167,7 +167,4 @@ class Application():
 
     def display_ability_info(self, ability):
         self.text.destroy()
-        link = f"https://pokeapi.co/api/v2/ability/{ability}"
-        raw = json.loads(requests.get(link).text)
-        ability_info = raw["effect_entries"][0]["effect"]
-        self.create_ability_info_field(2, 1, ability_info)
+        self.create_ability_info_field(2, 1, "nerd")

@@ -1,5 +1,6 @@
 import requests
 import json
+from poke_abilities import Ability
 
 
 class Pokemonster:
@@ -19,7 +20,7 @@ class Pokemonster:
             raise Exception("We were unable to find that pokemon")
 
     def get_abilities(self) -> list:
-        return [ab["ability"]["name"]
+        return [Ability(ab["ability"]["name"])
                 for ab in
                 self.data["abilities"]]
 
