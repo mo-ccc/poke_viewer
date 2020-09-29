@@ -12,6 +12,7 @@ class Application():
         self.create_sprite_widget(1, 0)
         self.create_info_container(2, 0)
         self.create_types_widget()
+        self.create_abilities_widget()
         self.create_pokedex_widget(0, 0)
         self.create_add_delete_buttons(0, 1)
 
@@ -52,6 +53,7 @@ class Application():
         print(pokemon.to_string)
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
+        self.display_abilities(pokemon.abilities)
 
     def create_sprite_widget(self, xcoord, ycoord):
         self.imgLbl = tkinter.Label(self.root, borderwidth=2, relief="groove",
@@ -145,7 +147,7 @@ class Application():
         positions = [(0, 0), (1, 0), (0, 1), (1, 1)]
         count = 0
         for ability in abilities:
-            ab_but = tkinter.Button(self.abilities_frame, text="ability")
+            ab_but = tkinter.Button(self.abilities_frame, text=ability)
             ab_but.grid(column=positions[count][0],
                         row=positions[count][1])
             count += 1
