@@ -3,17 +3,23 @@ from pokemonster import Pokemonster
 from io import BytesIO
 from PIL import Image as pil_image, ImageTk as pil_image_tk
 import requests
+import json
 
 
 class Application():
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.geometry('400x250')
+        # self.imgLbl
         self.create_sprite_widget(1, 0)
+        # self.info_container
         self.create_info_container(2, 0)
         self.create_types_widget()
         self.create_abilities_widget()
+        self.create_ability_info_field(2, 1, "enter")
+        # self.listbox
         self.create_pokedex_widget(0, 0)
+        # self.popup
         self.create_add_delete_buttons(0, 1)
 
     def create_pokedex_widget(self, xcoord, ycoord):
@@ -45,11 +51,11 @@ class Application():
 
     def make_selection(self, event=None):
         # gets the index of the current selection from the listbox
-        index = self.listbox.curselection()[0]
+        index: int = self.listbox.curselection()[0]
         # uses index to retrieve name of pokemon
-        name = Pokemonster.list_pokedex()[index]
+        name: str = Pokemonster.list_pokedex()[index]
         # initalizes pokemonster object from the name
-        pokemon = Pokemonster(name)
+        pokemon: Pokemonster = Pokemonster(name)
         print(pokemon.to_string)
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
@@ -144,10 +150,24 @@ class Application():
 
     def display_abilities(self, abilities):
         self.destroy_all_in_frame(self.abilities_frame.grid_slaves)
-        positions = [(0, 0), (1, 0), (0, 1), (1, 1)]
-        count = 0
+        positions: list = [(0, 0), (1, 0), (0, 1), (1, 1)]
+        count: int = 0
         for ability in abilities:
-            ab_but = tkinter.Button(self.abilities_frame, text=ability)
+            ab_but = tkinter.Button(self.abilities_frame, text=ability,
+                                    command=lambda:
+                                        self.display_ability_info(ability))
             ab_but.grid(column=positions[count][0],
                         row=positions[count][1])
             count += 1
+
+    def create_ability_info_field(self, xcoord, ycoord, textinput):
+        self.text = tkinter.Label(self.root, text=textinput,
+                                  width=20, wraplength=150)
+        self.text.grid(column=xcoord, row=ycoord)
+
+    def display_ability_info(self, ability):
+        self.text.destroy()
+        link = f"https://pokeapi.co/api/v2/ability/{ability}"
+        raw = json.loads(requests.get(link).text)
+        ability_info = raw["effect_entries"][0]["effect"]
+        self.create_ability_info_field(2, 1, ability_info)
