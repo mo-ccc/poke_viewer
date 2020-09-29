@@ -10,7 +10,8 @@ class Application():
         self.root = tkinter.Tk()
         self.root.geometry('400x250')
         self.create_sprite_widget(1, 0)
-        self.create_types_widget(2, 0)
+        self.create_info_container(2, 0)
+        self.create_types_widget()
         self.create_pokedex_widget(0, 0)
         self.create_add_delete_buttons(0, 1)
 
@@ -71,9 +72,13 @@ class Application():
         raw_bytes = pil_image.open(BytesIO(data))
         return pil_image_tk.PhotoImage(raw_bytes)
 
-    def create_types_widget(self, xcoord, ycoord):
-        self.types_frame = tkinter.Frame(self.root)
-        self.types_frame.grid(column=xcoord, row=ycoord)
+    def create_info_container(self, xcoord, ycoord):
+        self.info_container = tkinter.Frame(self.root)
+        self.info_container.grid(column=xcoord, row=ycoord)
+
+    def create_types_widget(self):
+        self.types_frame = tkinter.Frame(self.info_container)
+        self.types_frame.pack(side="top")
 
     colort = {
         "fire": "red", "water": "blue", "ground": "brown",
@@ -91,25 +96,28 @@ class Application():
         return "grey"
 
     def display_types(self, types):
-        list_grid = self.types_frame.pack_slaves()
-        for label in list_grid:
-            label.destroy()
+        self.destroy_all_in_frame(self.types_frame.pack_slaves)
         for t in types:
             lbl = tkinter.Label(self.types_frame, text=t,
                                 bg=self.type_colours(t), padx=10)
             lbl.pack(side="left")
 
+    def destroy_all_in_frame(self, frame_slavetype):
+        list_grid = frame_slavetype()
+        for item in list_grid:
+            item.destroy()
+
     def create_add_delete_buttons(self, xcoord, ycoord):
         frame = tkinter.Frame(self.root)
         frame.grid(column=xcoord, row=ycoord)
         add_button = tkinter.Button(frame, text="add",
-                                    command=self.add_pokemon)
+                                    command=self.add_pokemon_menu)
         add_button.pack(side="left", padx=(0, 10), ipadx=7)
         delete_button = tkinter.Button(frame, text="delete",
                                        command=self.del_pokemon)
         delete_button.pack(side="left", padx=(0, 15))
 
-    def add_pokemon(self):
+    def add_pokemon_menu(self):
         self.popup = tkinter.Tk()
         textfield = tkinter.Entry(self.popup)
         textfield.pack(side="left")
@@ -127,3 +135,17 @@ class Application():
     def del_pokemon(self):
         Pokemonster.pokedex.pop(self.listbox.curselection()[0])
         self.listbox.delete(tkinter.ACTIVE)
+
+    def create_abilities_widget(self):
+        self.abilities_frame = tkinter.Frame(self.info_container)
+        self.abilities_frame.pack(side="bottom")
+
+    def display_abilities(self, abilities):
+        self.destroy_all_in_frame(self.abilities_frame.grid_slaves)
+        positions = [(0, 0), (1, 0), (0, 1), (1, 1)]
+        count = 0
+        for ability in abilities:
+            ab_but = tkinter.Button(self.abilities_frame, text="ability")
+            ab_but.grid(column=positions[count][0],
+                        row=positions[count][1])
+            count += 1
