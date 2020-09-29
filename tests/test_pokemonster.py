@@ -1,4 +1,5 @@
 from poke_viewer.pokemonster import Pokemonster
+from poke_viewer.poke_abilities import Ability
 import unittest
 import copy
 
@@ -8,7 +9,8 @@ class TestApi(unittest.TestCase):
         self.assertEqual(self.bulbasaur.types, ['grass', 'poison'])
     
     def test_api_abilities(self):
-        self.assertEqual(self.bulbasaur.abilities, ['overgrow', 'chlorophyll'])
+        self.assertEqual([ab.name for ab in self.bulbasaur.abilities],
+        ['overgrow', 'chlorophyll'])
     
     def test_api_sprite(self):
         self.assertEqual(self.bulbasaur.sprites, 

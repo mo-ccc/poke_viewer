@@ -1,6 +1,6 @@
 import requests
 import json
-from poke_abilities import Ability
+from poke_viewer.poke_abilities import Ability
 
 
 class Pokemonster:
@@ -45,7 +45,8 @@ class Pokemonster:
 
     @property
     def to_string(self) -> tuple:
-        return (self.name, self.abilities, self.types, self.sprites)
+        return (self.name, [ab.name for ab in self.abilities],
+                self.types, self.sprites)
 
     pokedex: list = ['bulbasaur', 'ivysaur', 'venusaur', 'charmander',
                      'charmeleon', 'charizard', 'squirtle', 'wartortle',

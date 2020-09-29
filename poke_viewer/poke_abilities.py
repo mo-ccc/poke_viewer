@@ -19,3 +19,7 @@ class Ability:
                 return element["effect"]
 
         return "Info not found"
+
+    @property
+    def to_string(self):
+        return f"{self.name}:{self.info}"
