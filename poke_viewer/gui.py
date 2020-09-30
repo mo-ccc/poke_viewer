@@ -8,7 +8,7 @@ import requests
 class Application():
     def __init__(self):
         self.root = tk.Tk()
-        self.root.geometry('400x250')
+        self.root.geometry('500x250')
         # imgLbl
         self.imgLbl = tk.Label(self.root, borderwidth=2, relief="groove",
                                width=150, height=150)
@@ -111,7 +111,7 @@ class Application():
 
     def create_add_delete_buttons(self, xcoord, ycoord):
         frame = tk.Frame(self.root)
-        frame.grid(column=xcoord, row=ycoord)
+        frame.grid(column=xcoord, row=ycoord, sticky="n")
         add_button = tk.Button(frame, text="add",
                                command=self.add_pokemon_menu)
         add_button.pack(side="left", padx=(0, 10), ipadx=7)
@@ -152,9 +152,9 @@ class Application():
 
     def create_ability_info_field(self, xcoord, ycoord, textinput):
         self.text = tk.Label(self.root, text=textinput,
-                             width=27, wraplength=200,
-                             anchor="w", justify="left")
-        self.text.grid(column=xcoord, row=ycoord)
+                             width=30, wraplength=200,
+                             anchor="nw", justify="left")
+        self.text.grid(column=xcoord, row=ycoord, rowspan=2)
 
     def display_ability_info(self, ability_info):
         self.text.destroy()
