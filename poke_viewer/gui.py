@@ -152,12 +152,11 @@ class Application():
         positions: list = [(0, 0), (1, 0), (0, 1), (1, 1)]
         count: int = 0
         for ability in abilities:
-            ab_but = tkinter.Button(self.abilities_frame, text=ability,
-                                    command=lambda:
-                                        self.display_ability_info(ability.info)
-                                    )
-            ab_but.grid(column=positions[count][0],
-                        row=positions[count][1])
+            tkinter.Button(self.abilities_frame, text=ability.name,
+                           command=lambda a=ability:
+                           self.display_ability_info(a.info)
+                           ).grid(column=positions[count][0],
+                                  row=positions[count][1])
             count += 1
 
     def create_ability_info_field(self, xcoord, ycoord, textinput):
@@ -165,6 +164,6 @@ class Application():
                                   width=20, wraplength=150)
         self.text.grid(column=xcoord, row=ycoord)
 
-    def display_ability_info(self, ability):
+    def display_ability_info(self, ability_info):
         self.text.destroy()
-        self.create_ability_info_field(2, 1, "nerd")
+        self.create_ability_info_field(2, 1, ability_info)
