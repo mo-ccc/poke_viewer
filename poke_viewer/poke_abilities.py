@@ -16,7 +16,7 @@ class Ability:
         ability_info = raw["effect_entries"]
         for element in ability_info:
             if element["language"]["name"] == "en":
-                return element["effect"]
+                return element["effect"].split("\n")[0]
 
         return "Info not found"
 

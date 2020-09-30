@@ -14,14 +14,15 @@ class Application():
                                width=150, height=150)
         self.imgLbl.grid(column=1, row=0, rowspan=2)
         # info_container
-        self.info_container = tk.Frame(self.root, height=50)
-        self.info_container.grid(column=2, row=0, sticky="nw")
+        self.info_container = tk.Frame(self.root, height=30)
+        self.info_container.grid(column=2, row=0, sticky="nw",
+                                 rowspan=3)
         # types_widget
         self.types_frame = tk.Frame(self.info_container)
         self.types_frame.pack(side="top")
         # abilities_widget
         self.abilities_frame = tk.Frame(self.info_container)
-        self.abilities_frame.pack(side="bottom")
+        self.abilities_frame.pack(side="top")
         # ability_info
         self.create_ability_info_field(2, 1, "click on an ability")
         # self.listbox
@@ -151,10 +152,10 @@ class Application():
             count += 1
 
     def create_ability_info_field(self, xcoord, ycoord, textinput):
-        self.text = tk.Label(self.root, text=textinput,
+        self.text = tk.Label(self.info_container, text=textinput,
                              width=30, wraplength=200,
                              anchor="nw", justify="left")
-        self.text.grid(column=xcoord, row=ycoord, rowspan=2)
+        self.text.pack(side="bottom")
 
     def display_ability_info(self, ability_info):
         self.text.destroy()
