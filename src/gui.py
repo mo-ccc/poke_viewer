@@ -8,26 +8,27 @@ import requests
 class Application():
     def __init__(self):
         self.root = tk.Tk()
-        self.root.geometry('500x250')
+        self.root.configure(bg="white")
+        self.root.geometry('500x200')
         self.images = []
         # imgLbl
         self.imgLbl = tk.Label(self.root, borderwidth=2, relief="groove",
-                               width=150, height=150)
+                               width=150, height=150, bg="white")
         self.imgLbl.grid(column=1, row=0, rowspan=2)
         # info_container
-        self.info_container = tk.Frame(self.root, height=30)
+        self.info_container = tk.Frame(self.root, height=30, bg="white")
         self.info_container.grid(column=2, row=0, sticky="nw",
                                  rowspan=3)
         # types_widget
-        self.types_frame = tk.Frame(self.info_container)
+        self.types_frame = tk.Frame(self.info_container, bg="white")
         self.types_frame.pack(side="top")
         # abilities_widget
-        self.abilities_frame = tk.Frame(self.info_container)
+        self.abilities_frame = tk.Frame(self.info_container, bg="white")
         self.abilities_frame.pack(side="top")
         # ability_info
         self.text = tk.Label(self.info_container, text="click a button",
                              width=30, wraplength=200,
-                             anchor="nw", justify="left")
+                             anchor="nw", justify="left", bg="white")
         self.text.pack(side="bottom")
         # shiny_button
         self.shiny_button = tk.Button(self.root, text="shiny",
@@ -100,7 +101,7 @@ class Application():
         "poison": "purple", "grass": "green", "bug": "lawn green",
         "dragon": "slate blue", "fighting": "IndianRed1",
         "flying": "sky blue", "ghost": "plum1", "psychic": "pink",
-        "ice": "PaleTurqoise1", "electric": "yellow",
+        "ice": "PaleTurquoise1", "electric": "yellow",
         "rock": "burlywood3"
     }
 
@@ -123,7 +124,7 @@ class Application():
             lbl.pack(side="left")
 
     def create_add_delete_buttons(self, xcoord, ycoord):
-        frame = tk.Frame(self.root)
+        frame = tk.Frame(self.root, bg="white")
         frame.grid(column=xcoord, row=ycoord, sticky="n")
         add_button = tk.Button(frame, text="add",
                                command=self.add_pokemon_menu)
@@ -148,8 +149,11 @@ class Application():
             self.popup.destroy()
 
     def del_pokemon(self):
-        Pokemonster.pokedex.pop(self.listbox.curselection()[0])
-        self.listbox.delete(tk.ACTIVE)
+        try:
+            Pokemonster.pokedex.pop(self.listbox.curselection()[0])
+            self.listbox.delete(tk.ACTIVE)
+        except IndexError:
+            return
 
     def display_abilities(self, abilities):
         self.destroy_all_in_frame(self.abilities_frame.grid_slaves)
