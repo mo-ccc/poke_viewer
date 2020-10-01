@@ -20,6 +20,8 @@ class Pokemonster:
             raise Exception("We were unable to find that pokemon")
 
     # pulls abilities from json self.data
+    # instantiates an ability from the json data
+    # uses list comprehension to cover every ability
     def get_abilities(self) -> list:
         return [Ability(ab["ability"]["name"])
                 for ab in
@@ -46,8 +48,16 @@ class Pokemonster:
 
     @property
     def to_string(self) -> tuple:
-        return (self.name, [ab.name for ab in self.abilities],
+        return (self.name, self.ability_full,
                 self.types, self.sprites)
+
+    @property
+    def ability_names(self):
+        return [ab.name for ab in self.abilities]
+
+    @property
+    def ability_full(self):
+        return [ab.info_card for ab in self.abilities]
 
     pokedex: list = ['bulbasaur', 'ivysaur', 'venusaur', 'charmander',
                      'charmeleon', 'charizard', 'squirtle', 'wartortle',

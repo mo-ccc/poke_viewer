@@ -76,7 +76,6 @@ class Application():
     def make_selection(self, event=None):
         pokemon: Pokemonster = self.get_current_selection()
         print(pokemon.to_string)
-        self.toggle_form(0)
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
         self.display_abilities(pokemon.abilities)

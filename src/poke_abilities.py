@@ -21,5 +21,5 @@ class Ability:
         return "Info not found"
 
     @property
-    def to_string(self):
+    def info_card(self):
         return f"{self.name}:{self.info}"
