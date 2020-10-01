@@ -7,9 +7,7 @@ class Ability:
         self.name = name
         self.info = self.get_info(name)
 
-    def __str__(self):
-        return f"{self.name}:{self.info}"
-
+    # uses api to get info on an ability name
     def get_info(self, name):
         link = f"https://pokeapi.co/api/v2/ability/{name}"
         raw = json.loads(requests.get(link).text)

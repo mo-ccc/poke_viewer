@@ -11,30 +11,30 @@ class Application():
         self.root.configure(bg="white")
         self.root.geometry('500x200')
         self.images = []
-        # imgLbl
+        # tkinter label to contain image
         self.imgLbl = tk.Label(self.root, borderwidth=2, relief="groove",
                                width=150, height=150, bg="white")
         self.imgLbl.grid(column=1, row=0, rowspan=2)
-        # info_container
+        # tkinter frame to contain types, abilities, ability_info
         self.info_container = tk.Frame(self.root, height=30, bg="white")
         self.info_container.grid(column=2, row=0, sticky="nw",
                                  rowspan=3)
-        # types_widget
+        # frame to hold types
         self.types_frame = tk.Frame(self.info_container, bg="white")
         self.types_frame.pack(side="top")
-        # abilities_widget
+        # frame to hold abilities
         self.abilities_frame = tk.Frame(self.info_container, bg="white")
         self.abilities_frame.pack(side="top")
-        # ability_info
+        # ability_info label instantiated
         self.text = tk.Label(self.info_container, text="click a button",
                              width=30, wraplength=200,
                              anchor="nw", justify="left", bg="white")
         self.text.pack(side="bottom")
-        # shiny_button
+        # tkinter button to toggle between shiny and default img
         self.shiny_button = tk.Button(self.root, text="shiny",
                                       command=self.toggle_form)
         self.shiny_button.grid(column=1, row=2)
-        # self.listbox
+        # self.listbox is created with a scrollbar
         self.create_pokedex_widget(0, 0)
         # self.popup
         self.create_add_delete_buttons(0, 2)
@@ -56,7 +56,7 @@ class Application():
         scrollbar.config(command=self.listbox.yview)
 
         # fill listbox with list of pokemon
-        for pokemon in Pokemonster.list_pokedex():
+        for pokemon in Pokemonster.pokedex:
             self.listbox.insert(tk.END, pokemon)
 
         # set listbox selection to 0
@@ -70,7 +70,7 @@ class Application():
         # gets the index of the current selection from the listbox
         index: int = self.listbox.curselection()[0]
         # uses index to retrieve name of pokemon
-        name: str = Pokemonster.list_pokedex()[index]
+        name: str = Pokemonster.pokedex[index]
         # initalizes pokemonster object from the name
         return Pokemonster(name)
 
@@ -81,10 +81,17 @@ class Application():
         self.display_types(pokemon.types)
         self.display_abilities(pokemon.abilities)
 
+    '''
+    uses link to make a request to download the sprite image.
+    the image is made into a type compatible with tkinter
+    using the pillow module called by convert_link_2_img
+    function.
+    the image is appended to the images list along with the
+    name of the image. Doing so keeps the image in memory
+    and prevents deallocation.
+    '''
     def display_sprite_img(self, sprites, sprite):
-        data = requests.get(sprites[sprite]).content
-        raw_bytes = pil_image.open(BytesIO(data))
-        img = pil_image_tk.PhotoImage(raw_bytes)
+        img = self.convert_link_2_img(sprites[sprite])
         self.imgLbl.configure(image=img)
         self.images = []
         self.images.append(img)

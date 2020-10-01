@@ -22,7 +22,7 @@ class TestApi(unittest.TestCase):
         self.assertEqual(self.bulbasaur.sprites, self.comparison)
 
     def test_pokedex_append(self):
-        dex = Pokemonster.list_pokedex()
+        dex = Pokemonster.pokedex
         copy_dex = copy.deepcopy(dex)
         Pokemonster.add_pokemon("sandile")
         copy_dex.append("sandile")
