@@ -23,13 +23,11 @@ jobs:
       - name: install and run flake8
         run: |
           python -m pip install flake8
-          python -m flake8 poke_viewer/pokemonster.py
-          python -m flake8 poke_viewer/gui.py
+          python -m flake8 poke_viewer/
       - name: install and run mypy
         run: |
           python -m pip install mypy
-          python -m mypy poke_viewer/pokemonster.py --ignore-missing-imports
-          python -m mypy poke_viewer/gui.py --ignore-missing-imports
+          python -m mypy poke_viewer/ --ignore-missing-imports
   deployment:
     needs: test-suite
     runs-on: ubuntu-latest

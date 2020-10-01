@@ -25,6 +25,8 @@ class Application():
         self.abilities_frame.pack(side="top")
         # ability_info
         self.create_ability_info_field(2, 1, "click on an ability")
+        # shiny_button
+        self.shiny_button = tk.Button(self.root)
         # self.listbox
         self.create_pokedex_widget(0, 0)
         # self.popup
@@ -57,14 +59,18 @@ class Application():
         # call make selection so that the selected element <0> is used
         self.make_selection()
 
-    def make_selection(self, event=None):
+    def get_current_selection(self):
         # gets the index of the current selection from the listbox
         index: int = self.listbox.curselection()[0]
         # uses index to retrieve name of pokemon
         name: str = Pokemonster.list_pokedex()[index]
         # initalizes pokemonster object from the name
-        pokemon: Pokemonster = Pokemonster(name)
+        return Pokemonster(name)
+
+    def make_selection(self, event=None):
+        pokemon: Pokemonster = self.get_current_selection()
         print(pokemon.to_string)
+        self.toggle_form(0)
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
         self.display_abilities(pokemon.abilities)
@@ -76,6 +82,7 @@ class Application():
         self.imgLbl.configure(image=img)
         self.images = []
         self.images.append(img)
+        self.images.append(sprite)
 
     @classmethod
     def convert_link_2_img(cls, link):
@@ -160,3 +167,10 @@ class Application():
     def display_ability_info(self, ability_info):
         self.text.destroy()
         self.create_ability_info_field(2, 1, ability_info)
+
+    def toggle_form(self, current):
+        pokemon: Pokemonster = self.get_current_selection()
+        if "front_default" in self.images:
+            self.display_sprite_img(pokemon.sprites, "shiny_default")
+        else:
+            self.display_sprite_img(pokemon.sprites, "front_default")
