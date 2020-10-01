@@ -9,6 +9,7 @@ class Application():
     def __init__(self):
         self.root = tk.Tk()
         self.root.geometry('500x250')
+        self.images = []
         # imgLbl
         self.imgLbl = tk.Label(self.root, borderwidth=2, relief="groove",
                                width=150, height=150)
@@ -26,7 +27,9 @@ class Application():
         # ability_info
         self.create_ability_info_field(2, 1, "click on an ability")
         # shiny_button
-        self.shiny_button = tk.Button(self.root)
+        self.shiny_button = tk.Button(self.root, text="shiny",
+                                      command=self.toggle_form)
+        self.shiny_button.grid(column=1, row=2)
         # self.listbox
         self.create_pokedex_widget(0, 0)
         # self.popup
@@ -168,9 +171,9 @@ class Application():
         self.text.destroy()
         self.create_ability_info_field(2, 1, ability_info)
 
-    def toggle_form(self, current):
+    def toggle_form(self, *event):
         pokemon: Pokemonster = self.get_current_selection()
-        if "front_default" in self.images:
-            self.display_sprite_img(pokemon.sprites, "shiny_default")
+        if "default" in self.images:
+            self.display_sprite_img(pokemon.sprites, "shiny")
         else:
-            self.display_sprite_img(pokemon.sprites, "front_default")
+            self.display_sprite_img(pokemon.sprites, "default")

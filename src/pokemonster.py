@@ -1,6 +1,6 @@
 import requests
 import json
-from poke_viewer.poke_abilities import Ability
+from src.poke_abilities import Ability
 
 
 class Pokemonster:

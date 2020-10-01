@@ -1,5 +1,5 @@
-from poke_viewer.pokemonster import Pokemonster
-from poke_viewer.poke_abilities import Ability
+from src.pokemonster import Pokemonster
+from src.poke_abilities import Ability
 import unittest
 import copy
 
