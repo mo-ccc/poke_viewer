@@ -1,12 +1,15 @@
 import unittest
 from gui import Application
 from PIL import Image as pil_image
+import os
+import sys
 
 
 class test_gui(unittest.TestCase):
     @property
     def mario_img(self):
-        return pil_image.open("tests/test_img.png")
+        path = os.path.join(sys.path[0], "tests/test_img.png")
+        return pil_image.open(path)
 
     @property
     def mario_link_img(self):
