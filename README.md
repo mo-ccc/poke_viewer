@@ -33,3 +33,6 @@ User Interaction:
 - The user will be able to enter in a name of a pokemon to add it to the listbox
 
 ![help](docs/poke_viewer_1.0_graphic.png)
+
+
+[Github link](https://github.com/mo-ccc/poke_viewer/)
