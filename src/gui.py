@@ -8,8 +8,10 @@ import requests
 class Application():
     def __init__(self):
         self.root = tk.Tk()
+        # make root window background white
         self.root.configure(bg="white")
         self.root.title("poke_viewer 1.0")
+        # make root window fixed
         self.root.resizable(False, False)
         self.root.geometry('500x200')
         self.images = []
@@ -39,9 +41,46 @@ class Application():
                                       command=self.toggle_form)
         self.shiny_button.grid(column=1, row=2)
         # self.listbox is created with a scrollbar
+        # method below
         self.create_pokedex_widget(0, 0)
-        # self.popup
+        # creates an add and delete button under listbox
+        # method below
         self.create_add_delete_buttons(0, 2)
+        # popup
+        # creates a new window
+        self.popup = tk.Tk()
+        # hides window from view
+        self.popup.withdraw()
+        # if the root window is escaped call self.root_terminate...
+        self.root.protocol("WM_DELETE_WINDOW",
+                           lambda: self.root_terminate_protocol())
+        '''
+        if the popup window is escaped withdraw the popup instead of
+        terminating
+        '''
+        self.popup.protocol("WM_DELETE_WINDOW",
+                            lambda: self.popup.withdraw())
+        self.popup.title("add pokemon")
+        self.popup.resizable(False, False)
+        # popup window has an entry field to take user input
+        self.textfield = tk.Entry(self.popup)
+        self.textfield.pack(side="left", padx=20, pady=10)
+        '''
+        button next to entry field to submit user input
+        on click calls write_pokemon passing textfield value
+        as a parameter
+        '''
+        enter = tk.Button(self.popup, text="enter",
+                          command=lambda:
+                          self.write_pokemon(self.textfield.get()))
+        enter.pack(side="left", padx=5)
+
+    def root_terminate_protocol(self):
+        # terminates the root window
+        self.root.destroy()
+        # terminates the pop up window
+        # popup should go after or the application may stall
+        self.popup.destroy()
 
     def create_pokedex_widget(self, xcoord, ycoord):
         # create a frame and place on root grid
@@ -167,19 +206,7 @@ class Application():
         delete_button.pack(side="left", padx=(0, 15))
 
     def add_pokemon_menu(self):
-        # creates a new window
-        self.popup = tk.Tk()
-        self.popup.title("add pokemon")
-        self.popup.resizable(False, False)
-        # window has an entry field to take user input
-        textfield = tk.Entry(self.popup)
-        textfield.pack(side="left", padx=20, pady=10)
-        # button next to entry field to submit user input
-        # on click calls write_pokemon passing textfield as a parameter
-        enter = tk.Button(self.popup, text="enter",
-                          command=lambda:
-                          self.write_pokemon(textfield.get()))
-        enter.pack(side="left", padx=5)
+        self.popup.deiconify()
 
     def write_pokemon(self, name):
         print(name)
@@ -188,10 +215,12 @@ class Application():
         if Pokemonster.add_pokemon(name) == 0:
             '''
             if pokemon was successfully added insert it in the listbox
-            then destroy the popup.
+            then remove the contents currently in the textfield
+            then hide the popup.
             '''
             self.listbox.insert("end", name)
-            self.popup.destroy()
+            self.textfield.delete(0, "end")
+            self.popup.withdraw()
 
     def del_pokemon(self):
         try:
@@ -229,7 +258,11 @@ class Application():
 
     # called by the shiny button
     def toggle_form(self, *events):
-        pokemon: Pokemonster = self.current_selection
+        try:
+            pokemon: Pokemonster = self.current_selection
+        except IndexError:
+            print("No pokemon")
+            return
         '''
         if self.images currently has the default image
         display the shiny sprite

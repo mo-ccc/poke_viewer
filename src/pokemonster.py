@@ -105,6 +105,9 @@ class Pokemonster:
     # returns an int value that is used to determine the outcome
     @classmethod
     def add_pokemon(cls, name: str) -> int:
+        if name == "" or "/" in name:
+            print("Enter the name of a pokemon")
+            return 2
         response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}")
         if response.status_code == 200:
             if name in cls.pokedex:
