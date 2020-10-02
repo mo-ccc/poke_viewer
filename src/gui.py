@@ -26,10 +26,12 @@ class Application():
         self.abilities_frame = tk.Frame(self.info_container, bg="white")
         self.abilities_frame.pack(side="top")
         # ability_info label instantiated
-        self.text = tk.Label(self.info_container, text="click a button",
-                             width=30, wraplength=200,
-                             anchor="nw", justify="left", bg="white")
-        self.text.pack(side="bottom")
+        self.ability_info_text = tk.Label(self.info_container,
+                                          text="click a button",
+                                          width=30, wraplength=200,
+                                          anchor="nw", justify="left",
+                                          bg="white")
+        self.ability_info_text.pack(side="bottom")
         # tkinter button to toggle between shiny and default img
         self.shiny_button = tk.Button(self.root, text="shiny",
                                       command=self.toggle_form)
@@ -74,9 +76,11 @@ class Application():
         # initalizes pokemonster object from the name
         return Pokemonster(name)
 
-    def make_selection(self, event=None):
+    def make_selection(self, *events):
+        # stores pokemon object from function return
         pokemon: Pokemonster = self.get_current_selection()
         print(pokemon.to_string)
+        # passes the pokemon attributes to the functions
         self.display_sprite_img(pokemon.sprites, "default")
         self.display_types(pokemon.types)
         self.display_abilities(pokemon.abilities)
@@ -92,18 +96,24 @@ class Application():
     '''
     def display_sprite_img(self, sprites, sprite):
         img = self.convert_link_2_img(sprites[sprite])
-        self.imgLbl.configure(image=img)
+        photo = pil_image_tk.PhotoImage(img)
+        self.imgLbl.configure(image=photo)
         self.images = []
-        self.images.append(img)
+        self.images.append(photo)
         self.images.append(sprite)
 
+    # converts a http link of a png image into a pillow image
+    # pillow image can be displayed by tkinter
     @classmethod
     def convert_link_2_img(cls, link):
         data = requests.get(link).content
-        raw_bytes = pil_image.open(BytesIO(data))
-        return pil_image_tk.PhotoImage(raw_bytes)
+        return pil_image.open(BytesIO(data))
 
-    colort = {
+    '''
+    a dictionary containing element type keys with corresponding
+    color values
+    '''
+    colort: dict = {
         "fire": "red", "water": "blue", "ground": "brown",
         "poison": "purple", "grass": "green", "bug": "lawn green",
         "dragon": "slate blue", "fighting": "IndianRed1",
@@ -112,38 +122,55 @@ class Application():
         "rock": "burlywood3"
     }
 
+    '''
+    uses the colort dictionary to get the appropriate color
+    to be displayed by tkinter. if the color is not in the
+    dictionary this function returns "grey"
+    '''
     @classmethod
-    def type_colours(cls, color):
+    def type_2_color(cls, color):
         if color in cls.colort:
             return cls.colort[color]
         return "grey"
 
+    # destroys all tkinter widgets in a frame
+    # frame is passed in with the slave type following
+    # e.g. destroy_all_in_fram(frame.pack_slaves)
     def destroy_all_in_frame(self, frame_slavetype):
-        list_grid = frame_slavetype()
-        for item in list_grid:
-            item.destroy()
+        slave_list = frame_slavetype()
+        for widget in slave_list:
+            widget.destroy()
 
     def display_types(self, types):
+        # destroys all widgets in type frame
         self.destroy_all_in_frame(self.types_frame.pack_slaves)
+        # replaces those widgets with new label widgets
         for t in types:
             lbl = tk.Label(self.types_frame, text=t,
-                           bg=self.type_colours(t), padx=10)
+                           bg=self.type_2_color(t), padx=10)
             lbl.pack(side="left")
 
+    # creates a frame and creates two button widgets inside
     def create_add_delete_buttons(self, xcoord, ycoord):
         frame = tk.Frame(self.root, bg="white")
         frame.grid(column=xcoord, row=ycoord, sticky="n")
+        # add_button calls the add_pokemon_menu function on click
         add_button = tk.Button(frame, text="add",
                                command=self.add_pokemon_menu)
         add_button.pack(side="left", padx=(0, 10), ipadx=7)
+        # delete_button calls the del_pokemon function on click
         delete_button = tk.Button(frame, text="delete",
                                   command=self.del_pokemon)
         delete_button.pack(side="left", padx=(0, 15))
 
     def add_pokemon_menu(self):
+        # creates a new window
         self.popup = tk.Tk()
+        # window has an entry field to take user input
         textfield = tk.Entry(self.popup)
         textfield.pack(side="left")
+        # button next to entry field to submit user input
+        # on click calls write_pokemon passing textfield as a parameter
         enter = tk.Button(self.popup, text="enter",
                           command=lambda:
                           self.write_pokemon(textfield.get()))
@@ -151,34 +178,58 @@ class Application():
 
     def write_pokemon(self, name):
         print(name)
+        # adds the pokemon to the Pokemonster.pokedex list
+        # checks return value for error
         if Pokemonster.add_pokemon(name) == 0:
+            '''
+            if pokemon was successfully added insert it in the listbox
+            then destroy the popup.
+            '''
             self.listbox.insert("end", name)
             self.popup.destroy()
 
     def del_pokemon(self):
         try:
-            Pokemonster.pokedex.pop(self.listbox.curselection()[0])
+            # removes pokemon from pokedex list in Pokemonster class
+            Pokemonster.remove_pokemon(self.listbox.curselection()[0])
+            # then removes the pokemon from the listbox
             self.listbox.delete(tk.ACTIVE)
         except IndexError:
             return
 
     def display_abilities(self, abilities):
+        # destroys all slaves in abilities frame
         self.destroy_all_in_frame(self.abilities_frame.grid_slaves)
+        # a list of grid coordinates
         positions: list = [(0, 0), (1, 0), (0, 1), (1, 1)]
         count: int = 0
+        # for each ability in abilities create a button
+        # the count is used to place it on a grid
+        # the button calls the display_ability_info function
+        # the button passes the correspond ability info the function
         for ability in abilities:
             tk.Button(self.abilities_frame, text=ability.name,
                       command=lambda a=ability:
                       self.display_ability_info(a.info)
                       ).grid(column=positions[count][0],
                              row=positions[count][1])
+            # count is incremented for next ability
             count += 1
+            if count > 3:
+                return
 
     def display_ability_info(self, ability_info):
-        self.text.config(text=ability_info)
+        # changes info text to ability_info parameter
+        self.ability_info_text.config(text=ability_info)
 
-    def toggle_form(self, *event):
+    # called by the shiny button
+    def toggle_form(self, *events):
         pokemon: Pokemonster = self.get_current_selection()
+        '''
+        if self.images currently has the default image
+        display the shiny sprite
+        otherwise display the default sprite
+        '''
         if "default" in self.images:
             self.display_sprite_img(pokemon.sprites, "shiny")
         else:

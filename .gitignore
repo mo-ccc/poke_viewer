@@ -1,3 +1,4 @@
 env
 poke_viewer/__pycache__
 tests/__pycache__
+*.pyc
