@@ -8,5 +8,5 @@
 
 
 ### progress report 1
-[progress 1.png](first)
+[first](progress_1.png)
 

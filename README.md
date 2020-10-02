@@ -23,3 +23,4 @@ User Interaction:
 - The user will use the mouse to make a selection from a tkinter option-menu
 - The user will be able to toggle a tkinter button with mouse click
 
+![help](docs/poke_viewer_1.0_graphic.png)
