@@ -120,8 +120,8 @@ class Pokemonster:
     # removes a pokemon from the pokedex if it is there
     @classmethod
     def remove_pokemon(cls, name: str):
-        for pokemon in cls.pokedex:
-            if name == pokemon.name:
+        print(f"removing {name}")
+        for pokemon_name in cls.pokedex:
+            if name == pokemon_name:
                 cls.pokedex.remove(name)
                 return
-        print("Could not find that pokemon in the pokedex")

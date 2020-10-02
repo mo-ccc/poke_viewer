@@ -9,6 +9,8 @@ class Application():
     def __init__(self):
         self.root = tk.Tk()
         self.root.configure(bg="white")
+        self.root.title("poke_viewer 1.0")
+        self.root.resizable(False, False)
         self.root.geometry('500x200')
         self.images = []
         # tkinter label to contain image
@@ -68,7 +70,8 @@ class Application():
         # call make selection so that the selected element <0> is used
         self.make_selection()
 
-    def get_current_selection(self):
+    @property
+    def current_selection(self):
         # gets the index of the current selection from the listbox
         index: int = self.listbox.curselection()[0]
         # uses index to retrieve name of pokemon
@@ -78,7 +81,7 @@ class Application():
 
     def make_selection(self, *events):
         # stores pokemon object from function return
-        pokemon: Pokemonster = self.get_current_selection()
+        pokemon: Pokemonster = self.current_selection
         print(pokemon.to_string)
         # passes the pokemon attributes to the functions
         self.display_sprite_img(pokemon.sprites, "default")
@@ -166,15 +169,17 @@ class Application():
     def add_pokemon_menu(self):
         # creates a new window
         self.popup = tk.Tk()
+        self.popup.title("add pokemon")
+        self.popup.resizable(False, False)
         # window has an entry field to take user input
         textfield = tk.Entry(self.popup)
-        textfield.pack(side="left")
+        textfield.pack(side="left", padx=20, pady=10)
         # button next to entry field to submit user input
         # on click calls write_pokemon passing textfield as a parameter
         enter = tk.Button(self.popup, text="enter",
                           command=lambda:
                           self.write_pokemon(textfield.get()))
-        enter.pack(side="left")
+        enter.pack(side="left", padx=5)
 
     def write_pokemon(self, name):
         print(name)
@@ -191,7 +196,7 @@ class Application():
     def del_pokemon(self):
         try:
             # removes pokemon from pokedex list in Pokemonster class
-            Pokemonster.remove_pokemon(self.listbox.curselection()[0])
+            Pokemonster.remove_pokemon(self.current_selection.name)
             # then removes the pokemon from the listbox
             self.listbox.delete(tk.ACTIVE)
         except IndexError:
@@ -224,7 +229,7 @@ class Application():
 
     # called by the shiny button
     def toggle_form(self, *events):
-        pokemon: Pokemonster = self.get_current_selection()
+        pokemon: Pokemonster = self.current_selection
         '''
         if self.images currently has the default image
         display the shiny sprite
